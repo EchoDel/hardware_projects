@@ -25,6 +25,19 @@ def load_wifi_settings(config_file):
         return json.load(f)
 
 
+def update_wifi_settings(config_file, request):
+    ssid = request.split('ssid=')[1].split('&')[0]
+    password = request.split('password=')[1].split('&')[0]
+    hostname = request.split('hostname=')[1].split(' ')[0]
+
+    new_wifi_settings = {'ssid': ssid,
+                         'password': password,
+                         'hostname': hostname}
+    import json
+    with open(config_file, 'wb') as f:
+        json.dump(new_wifi_settings, f)
+
+
 def connect_wifi(config_file):
     wireless_properties = load_wifi_settings(config_file)
     return do_connect(**wireless_properties)
@@ -60,15 +73,18 @@ def update_wifi(config_file):
     max_attempts = 10
     while attempts < max_attempts:
         conn, addr = s.accept()
-        conn.settimeout(60.0)
+        conn.settimeout(30.0)
         request = conn.recv(1024)
         conn.settimeout(None)
         request = str(request)
         print('GET Request Content = %s' % request)
-        if request.find('/update_wifi'):
-            # update json
+        if request.find('/update_wifi') > 0:
+            update_wifi_settings(config_file, request)
             wireless_properties = load_wifi_settings(config_file)
-            new_wifi_html(**wireless_properties)
+            response = new_wifi_html(**wireless_properties)
+            send_response(conn, response)
+            conn.close()
+            break
         else:
             response = update_wifi_html(**wireless_properties)
             send_response(conn, response)
