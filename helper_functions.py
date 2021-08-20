@@ -16,4 +16,4 @@ def do_connect(ssid, password, hostname):
 def connect_wifi(config_file):
     import json
     wireless_properties = json.load(open(config_file, 'rb'))
-    return do_connect(*wireless_properties)
+    return do_connect(**wireless_properties)
