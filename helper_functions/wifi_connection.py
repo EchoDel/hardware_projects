@@ -69,9 +69,8 @@ def update_wifi(config_file):
     s.listen(5)
 
     wireless_properties = load_wifi_settings(config_file)
-    attempts = 0
     max_attempts = 10
-    while attempts < max_attempts:
+    for attempts in range(max_attempts):
         conn, addr = s.accept()
         conn.settimeout(30.0)
         request = conn.recv(1024)
