@@ -1,15 +1,21 @@
-def do_connect(ssid, password, hostname):
+import random
+from helper_functions.io import load_json_settings, update_json_settings
+
+
+def do_connect(attempts, ssid, password, hostname):
     import network
     from time import sleep
     sta_if = network.WLAN(network.STA_IF)
-    max_attempts = 100
+    max_attempts = attempts
     attempts = 0
 
     if not sta_if.isconnected():
         sta_if.active(True)
         sta_if.config(dhcp_hostname=hostname)
+        print(ssid, password)
         sta_if.connect(ssid, password)
         while not sta_if.isconnected():
+            print('trying to connect')
             if attempts > max_attempts:
                 break
             else:
@@ -19,28 +25,22 @@ def do_connect(ssid, password, hostname):
     return sta_if.isconnected()
 
 
-def load_wifi_settings(config_file):
-    import json
-    with open(config_file, 'rb') as f:
-        return json.load(f)
+def connect_wifi(attempts, config_file):
+    wireless_properties = load_json_settings(config_file)
+    return do_connect(attempts, **wireless_properties)
 
 
-def update_wifi_settings(config_file, request):
-    ssid = request.split('ssid=')[1].split('&')[0]
-    password = request.split('password=')[1].split('&')[0]
-    hostname = request.split('hostname=')[1].split(' ')[0]
-
-    new_wifi_settings = {'ssid': ssid,
-                         'password': password,
-                         'hostname': hostname}
-    import json
-    with open(config_file, 'wb') as f:
-        json.dump(new_wifi_settings, f)
-
-
-def connect_wifi(config_file):
-    wireless_properties = load_wifi_settings(config_file)
-    return do_connect(**wireless_properties)
+def setup_access_point(config_file):
+    wireless_properties = load_json_settings(config_file)
+    import network
+    ap_if = network.WLAN(network.AP_IF)
+    if 'hostname' in wireless_properties:
+        ap_if.config(essid=wireless_properties['hostname'],
+                     password=wireless_properties['hostname'],
+                     channel=3)
+    else:
+        ssid = 'PlantPot' + str(random.randint(0, 1000))
+        ap_if.config(essid=ssid, password=ssid, channel=3)
 
 
 def update_wifi_html(ssid, password, hostname):
@@ -68,7 +68,7 @@ def update_wifi(config_file):
     s.bind(('', 80))
     s.listen(5)
 
-    wireless_properties = load_wifi_settings(config_file)
+    wireless_properties = load_json_settings(config_file)
     max_attempts = 10
     for attempts in range(max_attempts):
         conn, addr = s.accept()
@@ -78,8 +78,8 @@ def update_wifi(config_file):
         request = str(request)
         print('GET Request Content = %s' % request)
         if request.find('/update_wifi') > 0:
-            update_wifi_settings(config_file, request)
-            wireless_properties = load_wifi_settings(config_file)
+            update_json_settings(config_file, request)
+            wireless_properties = load_json_settings(config_file)
             response = new_wifi_html(**wireless_properties)
             send_response(conn, response)
             conn.close()
@@ -89,3 +89,12 @@ def update_wifi(config_file):
             send_response(conn, response)
         conn.close()
         attempts += 1
+
+
+# tinyweb server based classed instead of sockets
+class TinywebUpdateWifi:
+    def get(self, data, config_file):
+        print(data)
+        update_json_settings(config_file, data)
+        wireless_properties = load_json_settings(config_file)
+        return update_wifi_html(**wireless_properties)
