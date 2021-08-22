@@ -62,5 +62,6 @@ async def my_app():
 
 print('loaded')
 
-app.run(host='0.0.0.0', port=80)
-uasyncio.run(my_app())
+app.run(host='0.0.0.0', port=80, loop_forever=False)
+app.loop.create_task(my_app())
+app.loop.run_forever()
