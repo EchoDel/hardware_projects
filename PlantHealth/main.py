@@ -6,6 +6,7 @@ from helper_functions.temperature import get_temperature
 from helper_functions.wifi_connection import connect_wifi, TinywebUpdateWifi, \
     update_wifi_html, setup_access_point
 import tinyweb
+from tinyweb.server import parse_query_string
 import network
 import uasyncio
 
@@ -23,21 +24,23 @@ if not sta_if.isconnected():
 
 app = tinyweb.server.webserver()
 
+
 # Update wifi page
 @app.route('/update_wifi')
 async def index(request, response):
-    # Start HTTP response with content-type text/html
     wireless_properties = load_json_settings(wifi_config_file)
+    # Start HTTP response with content-type text/html
     await response.start_html()
     # Send actual HTML page
     await response.send(update_wifi_html(**wireless_properties))
 
+
 @app.route('/send_wifi_update')
 async def index(request, response):
-    # Start HTTP response with content-type text/html
-    print(response)
-    update_json_settings(wifi_config_file, response)
+    new_config = parse_query_string(request.query_string.decode())
+    update_json_settings(wifi_config_file, new_config)
     wireless_properties = load_json_settings(wifi_config_file)
+    # Start HTTP response with content-type text/html
     await response.start_html()
     # Send actual HTML page
     await response.send(update_wifi_html(**wireless_properties))
