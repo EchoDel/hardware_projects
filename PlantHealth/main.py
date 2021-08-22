@@ -53,7 +53,7 @@ app.add_resource(TinywebUpdateWifi,
 async def my_app():
     plant_config = load_json_settings(plant_config_file)
     smd = get_soil_moisture()  # get SMD
-    number = get_neopixel_number(smd)
+    number = get_neopixel_number(smd, neopixel_number, **plant_config['soil_moisture'])
     temp = get_temperature()
     colour = get_colour(temp, **plant_config['temperature'])  # calculate colour
     update_neopixels(number, colour)
