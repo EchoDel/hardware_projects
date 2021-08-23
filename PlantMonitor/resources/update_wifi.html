@@ -1,0 +1,30 @@
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
+     integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+    <style>
+        html {{
+            font-family: Arial;
+            display: inline-block;
+            margin: 0px auto;
+            text-align: center;
+        }}
+    </style>
+</head>
+
+<body>
+    <h2>ESP MicroPython Update Wifi Setting</h2>
+	 <form action="/send_wifi_update">
+	  <label for="fname">SSID:</label>
+	  <input type="text" id="ssid" name="ssid", value="{ssid}"><br><br>
+	  <label for="lname">Password:</label>
+	  <input type="text" id="password" name="password", value="{password}"><br><br>
+	  <label for="lname">Device Hostname:</label>
+	  <input type="text" id="hostname" name="hostname"value="{hostname}"><br><br>
+	  <input type="submit" value="Submit">
+	</form>
+</body>
+
+</html>

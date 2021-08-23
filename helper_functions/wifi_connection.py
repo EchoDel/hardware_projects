@@ -25,6 +25,13 @@ def do_connect(attempts, ssid, password, hostname):
     return sta_if.isconnected()
 
 
+def get_wireless_settings():
+    import network
+    sta_if = network.WLAN(network.STA_IF)
+    sta_if_names = ['ip', 'subnet_mask', 'gateway', 'DNS_server']
+    return {x: y for x, y in zip(sta_if_names, sta_if.ifconfig())}
+
+
 def connect_wifi(attempts, config_file):
     wireless_properties = load_json_settings(config_file)
     return do_connect(attempts, **wireless_properties)
@@ -98,3 +105,29 @@ class TinywebUpdateWifi:
         update_json_settings(config_file, data)
         wireless_properties = load_json_settings(config_file)
         return update_wifi_html(**wireless_properties)
+
+
+def setup_tinyweb_wifi(app, wifi_config_file):
+    from tinyweb.server import parse_query_string
+    # Update wifi page
+    @app.route('/update_wifi')
+    async def index(request, response):
+        wireless_properties = load_json_settings(wifi_config_file)
+        # Start HTTP response with content-type text/html
+        await response.start_html()
+        # Send actual HTML page
+        await response.send(update_wifi_html(**wireless_properties))
+
+    @app.route('/send_wifi_update')
+    async def index(request, response):
+        new_config = parse_query_string(request.query_string.decode())
+        update_json_settings(wifi_config_file, new_config)
+        wireless_properties = load_json_settings(wifi_config_file)
+        # Start HTTP response with content-type text/html
+        await response.start_html()
+        # Send actual HTML page
+        await response.send(update_wifi_html(**wireless_properties))
+
+    app.add_resource(TinywebUpdateWifi,
+                     '/post_wifi_update',
+                     config_file=wifi_config_file)
