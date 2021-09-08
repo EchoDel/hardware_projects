@@ -8,5 +8,4 @@ def get_soil_moisture(air, water):
     adc = ADC(0)
     hum = adc.read_u16()
     hum = c_like_map(hum, air, water, 0, 100)
-    print(hum)
     return hum

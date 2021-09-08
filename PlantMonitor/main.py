@@ -29,34 +29,36 @@ if not sta_if.isconnected():
     setup_access_point(wifi_config_file)
 
 # Setup the tinyweb app
-app = tinyweb.server.webserver()
+webserver = tinyweb.server.webserver()
 # Add the update wifi settings to the app
-setup_tinyweb_wifi(app, wifi_config_file)
+setup_tinyweb_wifi(webserver, wifi_config_file)
 
 # Setup the webpages to update the config of the soil sensor
-setup_tinyweb_soil_moisture(app, wifi_config_file, plant_config_file)
+setup_tinyweb_soil_moisture(webserver, wifi_config_file, plant_config_file)
 
 
 # define the main loop of the application
 async def my_app():
-    plant_config = load_json_settings(plant_config_file)
-    soil_moisture = get_soil_moisture(
-        **plant_config['soil_moisture_calibration'])  # get SMD
-    number = get_neopixel_number(soil_moisture, neopixel_number,
-                                 **plant_config['soil_moisture'])
-    if number > neopixel_number:
-        colour = (255, 255, 0)
-        number = neopixel_number
-    else:
-        temp = get_temperature()
-        colour = get_colour(temp, **plant_config['temperature'])  # calculate colour
-    update_neopixels(number, colour, np)
-    print('sleeping')
-    await uasyncio.sleep(60)
+    while True:
+        plant_config = load_json_settings(plant_config_file)
+        soil_moisture = get_soil_moisture(
+            **plant_config['soil_moisture_calibration'])  # get SMD
+        print(soil_moisture)
+        number = get_neopixel_number(soil_moisture, neopixel_number,
+                                     **plant_config['soil_moisture'])
+        if number > neopixel_number:
+            colour = (200, 0, 200)
+            number = neopixel_number
+        else:
+            temp = get_temperature()
+            colour = get_colour(temp, **plant_config['temperature'])  # calculate colour
+        update_neopixels(neopixel_number, number, colour, np)
+        print('sleeping')
+        await uasyncio.sleep(60)
 
-app.loop.create_task(my_app())
+webserver.loop.create_task(my_app())
 
 print('loaded')
 
 # Run the app
-app.run(host='0.0.0.0', port=80)
+webserver.run(host='0.0.0.0', port=80)
