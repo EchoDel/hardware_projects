@@ -10,21 +10,28 @@
             display: inline-block;
             margin: 0px auto;
             text-align: center;
-        }}
+        }},
+        box {{
+			width: 200px;
+			height: 80px;
+			background-color: #522d5b;
+		}}
     </style>
 </head>
 
 <body>
     <h2>ESP MicroPython Update Wifi Setting</h2>
-	 <form action="/send_wifi_update">
-	  <label for="fname">SSID:</label>
-	  <input type="text" id="ssid" name="ssid", value="{ssid}"><br><br>
-	  <label for="lname">Password:</label>
-	  <input type="text" id="password" name="password", value="{password}"><br><br>
-	  <label for="lname">Device Hostname:</label>
-	  <input type="text" id="hostname" name="hostname"value="{hostname}"><br><br>
-	  <input type="submit" value="Submit">
-	</form>
+    <div class="row">
+		<div class="column">
+			<div class="box"></div>
+		</div>
+		<div class="column">
+			<div class="box"></div>
+		</div>
+		<div class="column">
+			<div class="box"></div>
+		</div>
+	</div>
 </body>
 
 </html>
