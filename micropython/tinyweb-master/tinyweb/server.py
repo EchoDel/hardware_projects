@@ -3,11 +3,17 @@ Tiny Web - pretty simple and powerful web server for tiny platforms like ESP8266
 MIT license
 (C) Konstantin Belyalov 2017-2018
 """
-import logging
+try:
+    import logging
+except:
+    import upip
+    upip.install('logging')
+    import logging
+
 import uasyncio as asyncio
 import uasyncio.core
 import ujson as json
-import gcupi
+import gc
 import uos as os
 import sys
 import uerrno as errno
