@@ -1,4 +1,6 @@
 import random
+
+from helper_functions.html import setup_webpage
 from helper_functions.io import load_json_settings, update_json_settings
 
 
@@ -50,18 +52,6 @@ def setup_access_point(config_file):
         ap_if.config(essid=ssid, password=ssid, channel=3)
 
 
-def update_wifi_html(ssid, password, hostname):
-    with open("helper_functions/resources/update_wifi.html") as f:
-        text = f.read()
-    return text.format(ssid=ssid, password=password, hostname=hostname)
-
-
-def new_wifi_html(ssid, password, hostname):
-    with open("helper_functions/resources/new_wifi_settings.html") as f:
-        text = f.read()
-    return text.format(ssid=ssid, password=password, hostname=hostname)
-
-
 def send_response(conn, response):
     conn.send('HTTP/1.1 200 OK\n')
     conn.send('Content-Type: text/html\n')
@@ -87,12 +77,14 @@ def update_wifi(config_file):
         if request.find('/update_wifi') > 0:
             update_json_settings(config_file, request)
             wireless_properties = load_json_settings(config_file)
-            response = new_wifi_html(**wireless_properties)
+            response = setup_webpage("helper_functions/resources/new_wifi_settings.html",
+                                     **wireless_properties)
             send_response(conn, response)
             conn.close()
             break
         else:
-            response = update_wifi_html(**wireless_properties)
+            response = setup_webpage("helper_functions/resources/update_wifi.html",
+                                     **wireless_properties)
             send_response(conn, response)
         conn.close()
         attempts += 1
@@ -104,7 +96,8 @@ class TinywebUpdateWifi:
         print(data)
         update_json_settings(config_file, data)
         wireless_properties = load_json_settings(config_file)
-        return update_wifi_html(**wireless_properties)
+        return setup_webpage("helper_functions/resources/update_wifi.html",
+                             **wireless_properties)
 
 
 def setup_tinyweb_wifi(app, wifi_config_file):
@@ -116,7 +109,8 @@ def setup_tinyweb_wifi(app, wifi_config_file):
         # Start HTTP response with content-type text/html
         await response.start_html()
         # Send actual HTML page
-        await response.send(update_wifi_html(**wireless_properties))
+        await response.send(setup_webpage("PlantMonitor/resources/update_wifi.html",
+                                          **wireless_properties))
 
     @app.route('/send_wifi_update')
     async def index(request, response):
@@ -126,7 +120,8 @@ def setup_tinyweb_wifi(app, wifi_config_file):
         # Start HTTP response with content-type text/html
         await response.start_html()
         # Send actual HTML page
-        await response.send(update_wifi_html(**wireless_properties))
+        await response.send(setup_webpage("helper_functions/resources/update_wifi.html",
+                                          **wireless_properties))
 
     app.add_resource(TinywebUpdateWifi,
                      '/post_wifi_update',

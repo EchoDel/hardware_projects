@@ -1,16 +1,15 @@
 from helper_functions.io import load_json_settings
 from helper_functions.soil_moisture import get_soil_moisture
 from helper_functions.temperature import get_temperature
-from helper_functions.wifi_connection import update_wifi_html, \
-    get_wireless_settings
-
+from helper_functions.wifi_connection import get_wireless_settings
+from helper_functions.html import setup_webpage
 
 async def landing_page(request, response, wifi_config_file):
     wireless_properties = load_json_settings(wifi_config_file)
     # Start HTTP response with content-type text/html
     await response.start_html()
     # Send actual HTML page
-    await response.send(update_wifi_html(**wireless_properties))
+    await response.send(setup_webpage("PlantMonitor/resources/index.html"))
 
 
 # tinyweb server based classed instead of sockets
