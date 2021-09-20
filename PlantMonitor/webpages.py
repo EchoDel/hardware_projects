@@ -1,3 +1,4 @@
+from PlantMonitor.helper_functions import get_colour
 from helper_functions.io import load_json_settings
 from helper_functions.soil_moisture import get_soil_moisture
 from helper_functions.temperature import get_temperature
@@ -14,11 +15,21 @@ async def landing_page(request, response):
 # tinyweb server based classed instead of sockets
 class GetStatus:
     def get(self, data, plant_config_file):
-        data = {}
+        data = {'debug':{}}
         data['network'] = get_wireless_settings()
         data['config'] = load_json_settings(plant_config_file)
-        data['soil_moisture'] = get_soil_moisture(**data['config']['soil_moisture_calibration'])
-        data['temperature'] = get_temperature()
+        adc_raw, soil_moisture_perc = get_soil_moisture(**data['config']['soil_moisture_calibration'])
+        data['soil_moisture'] = soil_moisture_perc
+        data['debug']['adc_raw'] = adc_raw
+
+        if soil_moisture_perc > data['config']['soil_moisture']['maximum']:
+            colour = (200, 0, 200)
+        else:
+            temp = get_temperature()
+            colour = get_colour(temp, **data['config']['temperature'])
+
+        data['temperature'] = temp
+        data['colour'] = colour
         return data
 
 

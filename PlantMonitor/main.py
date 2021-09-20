@@ -42,10 +42,9 @@ setup_tinyweb_soil_moisture(webserver, plant_config_file)
 async def my_app():
     while True:
         plant_config = load_json_settings(plant_config_file)
-        soil_moisture = get_soil_moisture(
+        adc_raw, soil_moisture_perc = get_soil_moisture(
             **plant_config['soil_moisture_calibration'])  # get SMD
-        print(soil_moisture)
-        number = get_neopixel_number(soil_moisture, neopixel_number,
+        number = get_neopixel_number(soil_moisture_perc, neopixel_number,
                                      **plant_config['soil_moisture'])
         if number > neopixel_number:
             colour = (200, 0, 200)
