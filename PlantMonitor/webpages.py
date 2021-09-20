@@ -4,8 +4,7 @@ from helper_functions.temperature import get_temperature
 from helper_functions.wifi_connection import get_wireless_settings
 from helper_functions.html import setup_webpage
 
-async def landing_page(request, response, wifi_config_file):
-    wireless_properties = load_json_settings(wifi_config_file)
+async def landing_page(request, response):
     # Start HTTP response with content-type text/html
     await response.start_html()
     # Send actual HTML page
@@ -42,7 +41,7 @@ def setup_tinyweb_soil_moisture(app, plant_config_file):
     # Update wifi page
     @app.route('/')
     async def index(request, response):
-        await landing_page(request, response, wifi_config_file)
+        await landing_page(request, response)
 
     @app.route('/index')
     async def index(request, response):
