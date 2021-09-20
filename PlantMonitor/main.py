@@ -6,7 +6,6 @@ from helper_functions.soil_moisture import get_soil_moisture
 from helper_functions.temperature import get_temperature
 from helper_functions.wifi_connection import connect_wifi, setup_access_point, \
     setup_tinyweb_wifi
-import tinyweb
 import network
 import uasyncio
 import machine
@@ -16,12 +15,14 @@ import neopixel
 wifi_config_file = 'configs/wireless_network.json'
 plant_config_file = 'PlantMonitor/config.json'
 neopixel_number = 10
+connect_wifi(2, wifi_config_file)
+
+
+import tinyweb
 
 # Setup the neopixel strip
 np = neopixel.NeoPixel(machine.Pin(5), neopixel_number)
 
-
-connect_wifi(2, wifi_config_file)
 
 # setup own wifi network if not connected
 sta_if = network.WLAN(network.STA_IF)
