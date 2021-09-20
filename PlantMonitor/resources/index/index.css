@@ -10,6 +10,9 @@
   text-align: center;
 }
 
+.form{
+width: 80%;
+}
 
 /* "Timeline" slider for the levels */
 .time-line-box {
@@ -109,3 +112,23 @@ div.arrow {
 		display: block;
 		transform-origin: 100% 0;
 	}
+
+.pointer {
+		float: left;
+		position: relative;
+		top: -100%;
+		width: 100%;
+		height: 100%;
+		border-width: 0 .8vmin 0 0;
+		border-style: solid;
+		border-color: #06072E;
+		transform-origin: 100% 0;
+		transition:.2s ease;
+	}
+
+.pointer:hover {
+		transform: rotate(45deg);
+		margin: 2;
+		border-color: orange;
+		height: 120%;
+}

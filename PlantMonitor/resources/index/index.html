@@ -25,7 +25,7 @@
 			</div>
 			<div class="row" align="center">
 				<section id="soil_moisture_box" class="time-line-box">
-					<div id="soil_moisture_arrow" class="arrow"><div class="bottom"></div><div class="pointer"></div></div>
+					<div id="soil_moisture_arrow" class="arrow"><div class="bottom"></div></div>
 					<div class="swiper-container text-center">
 						<div class="swiper-wrapper">
 							<div class="swiper-slide">
@@ -40,11 +40,11 @@
 						<div class="swiper-pagination"></div>
 					</div>
 				</section>
-				<form action="/update_soil">
+				<form action="/update_soil" class="form">
 				<label for="Minimum">Minimum:</label>
-				<input type="text" id="soil_minimum" name="minimum", value="minimum"><br><br>
+				<input type="number" id="soil_minimum" name="minimum" min=0 max=100><br><br>
 				<label for="Maximum">Maximum:</label>
-				<input type="text" id="soil_maximum" name="maximum", value="maximum"><br><br>
+				<input type="number" id="soil_maximum" name="maximum" min=0 max=100><br><br>
 				<input type="submit" value="Submit">
 			</form>
 		  </div>
@@ -58,7 +58,7 @@
 		  </div>
 		  <div class="row" align="center">
 			  <section id="temperature_box" class="time-line-box">
-                	<div id="temperature_arrow" class="arrow"><div class="bottom"></div><div class="pointer"></div></div>
+                	<div id="temperature_arrow" class="arrow"><div class="bottom"></div></div>
 					<div class="swiper-container text-center">
 						<div class="swiper-wrapper">
 							<div class="swiper-slide">
@@ -73,11 +73,11 @@
 						<div class="swiper-pagination"></div>
 					</div>
 			  </section>
-			  <form action="/update_soil">
+			  <form action="/update_soil" class="form">
 				<label for="Minimum">Minimum:</label>
-				<input type="text" id="temp_minimum" name="minimum", value="minimum"><br><br>
+				<input type="number" id="temp_minimum" name="minimum" min=0 max=50><br><br>
 				<label for="Maximum">Maximum:</label>
-				<input type="text" id="temp_maximum" name="maximum", value="maximum"><br><br>
+				<input type="number" id="temp_maximum" name="maximum" min=0 max=50><br><br>
 				<input type="submit" value="Submit">
 			  </form>
 		  </div>
