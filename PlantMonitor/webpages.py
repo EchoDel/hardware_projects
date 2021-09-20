@@ -25,15 +25,15 @@ class GetStatus:
 
 # Class to return the current soil moisture
 class GetSingleProperty:
-    def get(self, data, plant_config_file, property, get_function):
+    def get(self, data, plant_config_file, sensor, get_function):
         data = {}
         plant_config = load_json_settings(plant_config_file)
-        data['config'] = plant_config[property]
-        if property == 'soil_moisture':
-            data[property] = get_function(
+        data['config'] = plant_config[sensor]
+        if sensor == 'soil_moisture':
+            data[sensor] = get_function(
                 **plant_config['soil_moisture_calibration'])
         else:
-            data[property] = get_function()
+            data[sensor] = get_function()
         return data
 
 
@@ -55,11 +55,11 @@ def setup_tinyweb_soil_moisture(app, wifi_config_file, plant_config_file):
     app.add_resource(GetSingleProperty,
                      '/get_soil_moisture',
                      plant_config_file=plant_config_file,
-                     property='soil_moisture',
+                     sensor='soil_moisture',
                      get_function=get_soil_moisture)
 
     app.add_resource(GetSingleProperty,
                      '/get_temperature',
                      plant_config_file=plant_config_file,
-                     property='temperature',
+                     sensor='temperature',
                      get_function=get_temperature)
