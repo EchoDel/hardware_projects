@@ -9,7 +9,7 @@ async def landing_page(request, response):
     # Start HTTP response with content-type text/html
     await response.start_html()
     # Send actual HTML page
-    await response.send(setup_webpage("PlantMonitor/resources/index.html"))
+    await response.send(setup_webpage("PlantMonitor/resources/index/index.min.html"))
 
 
 # tinyweb server based classed instead of sockets
@@ -52,16 +52,29 @@ def setup_tinyweb_soil_moisture(app, plant_config_file):
     # Update wifi page
     @app.route('/')
     async def index(request, response):
-        await landing_page(request, response)
+        await response.send_file("PlantMonitor/resources/index/index.min.html.gz",
+                                 content_type="text/html",
+                                 content_encoding="gzip")
 
     @app.route('/index')
     async def index(request, response):
         await landing_page(request, response)
 
-    @app.route('/style.css')
+    @app.route('/index.css')
     async def css_style(request, response):
-        await response.send_file("PlantMonitor/resources/style.css",
+        await response.send_file("PlantMonitor/resources/index/index.min.css",
                                  content_type="text/css")
+
+    @app.route('/index.js')
+    async def css_style(request, response):
+        await response.send_file("PlantMonitor/resources/index/index.min.js",
+                                 content_type="application/javascript")
+        # content type https://stackoverflow.com/questions/23714383/what-are-all-the-possible-values-for-http-content-type-header
+
+    @app.route('/favicon.ico')
+    async def css_style(request, response):
+        await response.send_file("PlantMonitor/resources/favicon.ico",
+                                 content_type="image/x-icon")
 
     app.add_resource(GetStatus,
                      '/get_status',
