@@ -37,7 +37,7 @@ class GetSingleProperty:
         return data
 
 
-def setup_tinyweb_soil_moisture(app, wifi_config_file, plant_config_file):
+def setup_tinyweb_soil_moisture(app, plant_config_file):
     # from tinyweb.server import parse_query_string
     # Update wifi page
     @app.route('/')

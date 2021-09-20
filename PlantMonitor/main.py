@@ -35,7 +35,7 @@ webserver = tinyweb.server.webserver()
 setup_tinyweb_wifi(webserver, wifi_config_file)
 
 # Setup the webpages to update the config of the soil sensor
-setup_tinyweb_soil_moisture(webserver, wifi_config_file, plant_config_file)
+setup_tinyweb_soil_moisture(webserver, plant_config_file)
 
 
 # define the main loop of the application
