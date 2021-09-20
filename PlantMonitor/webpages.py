@@ -47,6 +47,11 @@ def setup_tinyweb_soil_moisture(app, plant_config_file):
     async def index(request, response):
         await landing_page(request, response)
 
+    @app.route('/style.css')
+    async def css_style(request, response):
+        await response.send_file("PlantMonitor/resources/style.css",
+                                 content_type="text/css")
+
     app.add_resource(GetStatus,
                      '/get_status',
                      plant_config_file=plant_config_file)
