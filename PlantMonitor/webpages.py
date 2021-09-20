@@ -17,7 +17,7 @@ class GetStatus:
         data = {}
         data['network'] = get_wireless_settings()
         data['config'] = load_json_settings(plant_config_file)
-        data['soil_moisture'] = get_soil_moisture()
+        data['soil_moisture'] = get_soil_moisture(**data['config']['soil_moisture_calibration'])
         data['temperature'] = get_temperature()
         return data
 
