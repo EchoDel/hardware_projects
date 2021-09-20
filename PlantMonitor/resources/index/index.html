@@ -2,7 +2,7 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="/index.css">
-	<!-- Compiled and minified CSS -->
+    <!-- Compiled and minified CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
 
     <!-- Compiled and minified JavaScript -->
@@ -11,80 +11,83 @@
 </head>
 
 <body>
-	<div class="row"> <!-- Header Section -->
-		<div class="col s3"></div>
-		<div class="col s6"><h2 class="center">ESP MicroPython Soil Monitor</h2></div>
-		<div class="col s3"></div>
-	</div>
+    <div class="row"> <!-- Header Section -->
+        <div class="col s3"></div>
+        <div class="col s6"><h2 class="center">ESP MicroPython Soil Monitor</h2></div>
+        <div class="col s3"></div>
+    </div>
 
     <div class="row"> <!-- Main Body -->
-		<div class="col s3"></div>
-		<div class="col s3">
-			<div class="row" align="center">
-				<h4 id="soil_value" class="center">Soil Moisture :</h4>
-			</div>
-			<div class="row" align="center">
-				<section id="soil_moisture_box" class="time-line-box">
-					<div id="soil_moisture_arrow" class="arrow"><div class="bottom"></div></div>
-					<div class="swiper-container text-center">
-						<div class="swiper-wrapper">
-							<div class="swiper-slide">
-							<div id="soil_moisture_minimum">0</div>
-							<div class="status"><span>Minimum</span></div>
-							</div>
-							<div class="swiper-slide">
-							  <div id="soil_moisture_maximum">0</div>
-							  <div class="status"><span>Maximum</span></div>
-							</div>
-						</div>
-						<div class="swiper-pagination"></div>
-					</div>
-				</section>
-				<form action="/update_soil" class="form">
-				<label for="Minimum">Minimum:</label>
-				<input type="number" id="soil_minimum" name="minimum" min=0 max=100><br><br>
-				<label for="Maximum">Maximum:</label>
-				<input type="number" id="soil_maximum" name="maximum" min=0 max=100><br><br>
-				<input type="submit" value="Submit">
-			</form>
-		  </div>
-		</div>
+        <div class="col s3"></div>
 
 
 
-      <div class="col s3">
-		  <div class="row" align="center">
-			  <h4 id="temperature_value" class="center">Temperature :</h4>
-		  </div>
-		  <div class="row" align="center">
-			  <section id="temperature_box" class="time-line-box">
-                	<div id="temperature_arrow" class="arrow"><div class="bottom"></div></div>
-					<div class="swiper-container text-center">
-						<div class="swiper-wrapper">
-							<div class="swiper-slide">
-							  <div id="temperature_minimum">0</div>
-							  <div class="status"><span>Work</span></div>
-							</div>
-							<div class="swiper-slide">
-							  <div id="temperature_maximum">0</div>
-							  <div class="status"><span>Work</span></div>
-							</div>
-						</div>
-						<div class="swiper-pagination"></div>
-					</div>
-			  </section>
-			  <form action="/update_soil" class="form">
-				<label for="Minimum">Minimum:</label>
-				<input type="number" id="temp_minimum" name="minimum" min=0 max=50><br><br>
-				<label for="Maximum">Maximum:</label>
-				<input type="number" id="temp_maximum" name="maximum" min=0 max=50><br><br>
-				<input type="submit" value="Submit">
-			  </form>
-		  </div>
-	 	</div>
+        <div class="col s3">
+            <div class="row" align="center">
+                <h4 id="soil_value" class="center">Soil Moisture :</h4>
+            </div>
+            <div class="row" align="center">
+                <section id="soil_moisture_box" class="time-line-box">
+                    <div id="soil_moisture_arrow" class="arrow"><div class="bottom"></div></div>
+                    <div class="swiper-container text-center">
+                        <div class="swiper-wrapper">
+                            <div class="swiper-slide">
+                                <div id="soil_moisture_minimum">0</div>
+                                <div class="status"><span>Minimum</span></div>
+                            </div>
+                            <div class="swiper-slide">
+                                <div id="soil_moisture_maximum">0</div>
+                                <div class="status"><span>Maximum</span></div>
+                            </div>
+                        </div>
+                        <div class="swiper-pagination"></div>
+                    </div>
+                </section>
+                <form action="/update_soil" class="form">
+                    <label for="Minimum">Minimum:</label>
+                    <input type="number" id="soil_minimum" name="minimum" min=0 max=100><br><br>
+                    <label for="Maximum">Maximum:</label>
+                    <input type="number" id="soil_maximum" name="maximum" min=0 max=100><br><br>
+                    <input type="submit" value="Submit">
+                </form>
+            </div>
+        </div>
 
-		<div class="col s3"></div>
-	</div>
+
+
+        <div class="col s3">
+            <div class="row" align="center">
+                <h4 id="temperature_value" class="center">Temperature :</h4>
+            </div>
+            <div class="row" align="center">
+                <section id="temperature_box" class="time-line-box">
+                    <div id="temperature_arrow" class="arrow"><div class="bottom"></div></div>
+                    <div class="swiper-container text-center">
+                        <div class="swiper-wrapper">
+                            <div class="swiper-slide">
+                                <div id="temperature_minimum">0</div>
+                                <div class="status"><span>Work</span></div>
+                            </div>
+                            <div class="swiper-slide">
+                                <div id="temperature_maximum">0</div>
+                                <div class="status"><span>Work</span></div>
+                            </div>
+                        </div>
+                        <div class="swiper-pagination"></div>
+                    </div>
+                </section>
+                <form action="/update_temperature" class="form">
+                    <label for="Minimum">Minimum:</label>
+                    <input type="number" id="temp_minimum" name="minimum" min=0 max=50><br><br>
+                    <label for="Maximum">Maximum:</label>
+                    <input type="number" id="temp_maximum" name="maximum" min=0 max=50><br><br>
+                    <input type="submit" value="Submit">
+                </form>
+            </div>
+        </div>
+
+        <div class="col s3"></div>
+    </div>
 </body>
 
 </html>
