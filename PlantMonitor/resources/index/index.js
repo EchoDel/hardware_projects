@@ -14,9 +14,13 @@ function update_data(data) {
     // update the ranges
     document.getElementById("soil_moisture_minimum").innerHTML = data.config.soil_moisture.minimum;
     document.getElementById("soil_moisture_maximum").innerHTML = data.config.soil_moisture.maximum;
+    document.getElementById("soil_minimum").value = data.config.soil_moisture.minimum;
+    document.getElementById("soil_maximum").value = data.config.soil_moisture.maximum;
 
     document.getElementById("temperature_minimum").innerHTML = data.config.temperature.minimum;
     document.getElementById("temperature_maximum").innerHTML = data.config.temperature.maximum;
+    document.getElementById("temp_minimum").value = data.config.temperature.minimum;
+    document.getElementById("temp_maximum").value = data.config.temperature.maximum;
 
     // actual values
     var soil_value = document.getElementById("soil_value");
