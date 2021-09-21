@@ -58,21 +58,23 @@ def setup_tinyweb_soil_moisture(app, plant_config_file):
 
     @app.route('/index')
     async def index(request, response):
-        await landing_page(request, response)
+        await response.send_file("PlantMonitor/resources/index/index.min.html.gz",
+                                 content_type="text/html",
+                                 content_encoding="gzip")
 
     @app.route('/index.css')
-    async def css_style(request, response):
+    async def index_css(request, response):
         await response.send_file("PlantMonitor/resources/index/index.min.css",
                                  content_type="text/css")
 
     @app.route('/index.js')
-    async def css_style(request, response):
+    async def index_js(request, response):
         await response.send_file("PlantMonitor/resources/index/index.min.js",
                                  content_type="application/javascript")
         # content type https://stackoverflow.com/questions/23714383/what-are-all-the-possible-values-for-http-content-type-header
 
     @app.route('/favicon.ico')
-    async def css_style(request, response):
+    async def favicon(request, response):
         await response.send_file("PlantMonitor/resources/favicon.ico",
                                  content_type="image/x-icon")
 
