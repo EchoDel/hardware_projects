@@ -95,6 +95,13 @@ def setup_tinyweb_soil_moisture(app, plant_config_file):
         # Send actual HTML page
         await response.send(
             '<meta http-equiv="Refresh" content="0; url=\'/index\'" />')
+
+    @app.route('/update_soil_calibration')
+    async def update_soil(request, response):
+        result = parse_query_string(request.query_string.decode())
+        new_config = {}
+        new_config['soil_moisture_calibration'] = \
+            {key: float(value) for key, value in result.items()}
         update_json_settings(plant_config_file, new_config)
         await response.start_html()
         # Send actual HTML page
