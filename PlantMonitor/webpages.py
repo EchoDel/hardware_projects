@@ -15,11 +15,11 @@ class GetStatus:
         adc_raw, soil_moisture_perc = get_soil_moisture(**data['config']['soil_moisture_calibration'])
         data['soil_moisture'] = soil_moisture_perc
         data['debug']['adc_raw'] = adc_raw
+        temp = get_temperature()
 
         if soil_moisture_perc > data['config']['soil_moisture']['maximum']:
             colour = (200, 0, 200)
         else:
-            temp = get_temperature()
             colour = get_colour(temp, **data['config']['temperature'])
 
         data['temperature'] = temp
