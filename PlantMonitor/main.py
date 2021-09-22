@@ -53,7 +53,6 @@ async def my_app():
             temp = get_temperature()
             colour = get_colour(temp, **plant_config['temperature'])  # calculate colour
         update_neopixels(neopixel_number, number, colour, np)
-        print('sleeping')
         await uasyncio.sleep(60)
 
 webserver.loop.create_task(my_app())
