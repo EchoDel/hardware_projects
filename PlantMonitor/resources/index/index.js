@@ -16,6 +16,9 @@ function update_data(data) {
     document.getElementById("soil_moisture_maximum").innerHTML = data.config.soil_moisture.maximum;
     document.getElementById("soil_minimum").value = data.config.soil_moisture.minimum;
     document.getElementById("soil_maximum").value = data.config.soil_moisture.maximum;
+    document.getElementById("air").value = data.config.soil_moisture_calibration.air;
+    document.getElementById("water").value = data.config.soil_moisture_calibration.water;
+    document.getElementById("current").innerHTML = 'Current ADC: ' + data.debug.adc_raw;
 
     document.getElementById("temperature_minimum").innerHTML = data.config.temperature.minimum;
     document.getElementById("temperature_maximum").innerHTML = data.config.temperature.maximum;
