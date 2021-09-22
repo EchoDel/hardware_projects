@@ -16,5 +16,5 @@ foreach($file in $files){
 # Minify the html
 $files = Get-ChildItem ./ -recurse -force -include *.html | where-object{$_.fullname -notlike '*node_modules*'}  | where-object{$_.fullname -notlike '*min*'}
 foreach($file in $files){
-    java -jar build/htmlcompressor-1.5.3.jar $file.FullName > $file.FullName.Replace('.html', '.min.html')
+    java -jar build_scripts/htmlcompressor-1.5.3.jar $file.FullName > $file.FullName.Replace('.html', '.min.html')
 }
