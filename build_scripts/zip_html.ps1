@@ -23,7 +23,7 @@ Function Gzip-File([ValidateScript({Test-Path $_})][string]$File){
 }
 
 # Minify the html
-$files = Get-ChildItem ./ -recurse -force -include *min..html | where-object{$_.fullname -notlike '*node_modules*'}
+$files = Get-ChildItem ./ -recurse -force -include *.html | where-object{$_.fullname -notlike '*node_modules*'}
 foreach($file in $files){
-    Gzip-File file.FullName
+    Gzip-File $file.FullName
 }

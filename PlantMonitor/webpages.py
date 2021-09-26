@@ -46,13 +46,13 @@ def setup_tinyweb_soil_moisture(app, plant_config_file):
     # Update wifi page
     @app.route('/')
     async def index(request, response):
-        await response.send_file("PlantMonitor/resources/index/index.min.html.gz",
+        await response.send_file("PlantMonitor/resources/index/index.html.gz",
                                  content_type="text/html",
                                  content_encoding="gzip")
 
     @app.route('/index')
     async def index(request, response):
-        await response.send_file("PlantMonitor/resources/index/index.min.html.gz",
+        await response.send_file("PlantMonitor/resources/index/index.html.gz",
                                  content_type="text/html",
                                  content_encoding="gzip")
 
