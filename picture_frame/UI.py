@@ -53,3 +53,4 @@ window = sg.Window('Scrolling Image Viewer',
                    no_titlebar=True)
 
 window.Maximize()
+window.bind("<Escape>", "-ESCAPE-")

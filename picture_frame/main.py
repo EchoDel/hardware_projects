@@ -35,7 +35,7 @@ if __name__ == "__main__":
                 save_config_file(photos_config_path, photos_config)
 
         event, values = window.read(timeout=5)
-        if event == sg.WIN_CLOSED:
+        if event in (sg.WINDOW_CLOSED, "-ESCAPE-"):
             break
 
     window.close()
