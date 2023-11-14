@@ -1,5 +1,6 @@
 {
   "photo_folder": "//rhino/photos/photos",
   "disallowed_folders": ["charly photos", "Parry_Photos"],
-  "photos_config": "//rhino/photos/picture_frame/photos.json"
+  "photos_config": "picture_frame/photos.json",
+  "second_to_show": 10
 }
