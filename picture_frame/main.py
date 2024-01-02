@@ -2,25 +2,28 @@ from pathlib import Path
 
 import PySimpleGUI as sg
 
-from picture_frame.UI import convert_to_bytes, G_SIZE, graph, window
 from picture_frame.config_management import get_program_config, load_photo_config, sample_config_random, \
     save_config_file, sample_config_maintain_folder
 
 config_path = Path('picture_frame/config.json')
 
 
-def main(photos_config: dict, seconds_to_show: int):
+def main(photos_config: dict, seconds_to_show: int, sampling_strategy: str):
+    from picture_frame.UI import convert_to_bytes, G_SIZE, graph, window
     previous_image = ""
     keep_going = True
     while keep_going:
         for x in range(seconds_to_show):
-            file_to_display = sample_config_maintain_folder(photos_config)
+            if sampling_strategy == 'folder':
+                file_to_display = sample_config_maintain_folder(photos_config)
+            else:
+                file_to_display = sample_config_random(photos_config)
             print(file_to_display)
             if not previous_image == file_to_display:
                 try:
                     img_data, img_width, img_height = convert_to_bytes(str(file_to_display), resize=G_SIZE)
 
-                    if 'image_id' in globals():
+                    if 'image_id' in locals():
                         graph.delete_figure(image_id)
 
                     image_id = graph.draw_image(data=img_data,
@@ -40,10 +43,10 @@ def main(photos_config: dict, seconds_to_show: int):
     window.close()
 
 
-
 if __name__ == "__main__":
     # Read the photos to display
-    photo_folder, photos_config_path, disallowed_folders, seconds_to_show = get_program_config(config_path)
+    photo_folder, photos_config_path, disallowed_folders, seconds_to_show, sampling_strategy = (
+        get_program_config(config_path))
     photos_config = load_photo_config(photo_folder, photos_config_path, disallowed_folders)
     # photos_config = {key: value for key, value in photos_config.items() if '2019_Bristol' in str(key)}
-    main(photos_config, seconds_to_show)
+    main(photos_config, seconds_to_show, sampling_strategy)
