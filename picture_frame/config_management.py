@@ -5,7 +5,7 @@ from typing import Iterable
 
 CURRENT_FOLDER = None
 SEEN_PICTURES = []
-DISALLOWED_EXTENSION = ['.xmp', '.XMP', '.db', '.pp3']
+DISALLOWED_EXTENSION = ['.xmp', '.XMP', '.db', '.pp3', '.hidden']
 
 
 def get_program_config(config_path: Path):
@@ -24,7 +24,7 @@ def load_folder(photo_sub_folder: Path, photos: dict):
     for photo_path in photo_sub_folder.glob('*'):
         if photo_path.is_dir():
             load_folder(photo_path, photos)
-        if photo_path.suffix in DISALLOWED_EXTENSION:
+        if photo_path.suffix.lower() in DISALLOWED_EXTENSION:
             continue
         if photo_path not in photos:
             photos[photo_path] = 100
@@ -73,7 +73,6 @@ def sample_config_maintain_folder(config_dict: dict, new_folder: bool = False):
     else:
         image = sample_config_random(images_to_pick_from)
     SEEN_PICTURES.append(image)
-    print(SEEN_PICTURES)
     return image
 
 
