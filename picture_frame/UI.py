@@ -7,9 +7,12 @@ import PIL
 import io
 import base64
 
+from pillow_heif import register_heif_opener
+
 G_SIZE = (1920, 1080)          # Size of the Graph in pixels. Using a 1 to 1 mapping of pixels to pixels
 
 sg.theme('black')
+register_heif_opener()
 
 
 def normalise_rotation_tiff(image: Image.Image):
@@ -30,9 +33,10 @@ def normalise_rotation_tiff(image: Image.Image):
 
 
 def normalise_rotation(image: Image.Image):
-    if image.format == 'TIFF':
-        image = normalise_rotation_tiff(image)
-
+    # if image.format == 'TIFF':
+    #     image = normalise_rotation_tiff(image)
+    # else:
+    image = ImageOps.exif_transpose(image)
     return image
 
 
@@ -51,7 +55,7 @@ def convert_to_bytes(file_or_bytes, resize=None):
     else:
         img = PIL.Image.open(io.BytesIO(base64.b64decode(file_or_bytes)))
 
-    img = ImageOps.exif_transpose(img)
+    img = normalise_rotation(img)
     cur_width, cur_height = img.size
     if resize:
         new_width, new_height = resize
