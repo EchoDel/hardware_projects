@@ -1,22 +1,31 @@
 import json
 import random
 from pathlib import Path
-from typing import Iterable
+from typing import Iterable, TypedDict, Literal
 
 CURRENT_FOLDER = None
 SEEN_PICTURES = []
 DISALLOWED_EXTENSION = ['.xmp', '.XMP', '.db', '.pp3', '.hidden']
 
+sampling_strategies = Literal['folder', 'random']
 
-def get_program_config(config_path: Path):
+
+class ProgramConfig(TypedDict):
+    photo_folder: Path
+    photos_config: Path
+    disallowed_folders: Iterable[str]
+    seconds_to_show: int
+    sampling_strategy: sampling_strategies
+    folder_sampling_level: int
+
+
+def get_program_config(config_path: Path) -> ProgramConfig:
     with open(config_path, 'r') as f:
         config = json.load(f)
-    photo_folder = Path(config['photo_folder'])
-    photos_config = Path(config['photos_config'])
-    disallowed_folders = config['disallowed_folders']
-    seconds_to_show = config['second_to_show']
-    sampling_strategy = config['sampling_strategy']
-    return photo_folder, photos_config, disallowed_folders, seconds_to_show, sampling_strategy
+    config['photo_folder'] = Path(config['photo_folder'])
+    config['photos_config'] = Path(config['photos_config'])
+
+    return config
 
 
 def load_folder(photo_sub_folder: Path, photos: dict):
@@ -30,7 +39,10 @@ def load_folder(photo_sub_folder: Path, photos: dict):
             photos[photo_path] = 100
 
 
-def load_photo_config(photo_folder: Path, photos_config: Path, disallowed_folders: Iterable):
+def load_photo_config(program_config: ProgramConfig):
+    photos_config = program_config['photos_config']
+    disallowed_folders = program_config['disallowed_folders']
+    photo_folder = program_config['photo_folder']
     if photos_config.exists():
         with open(photos_config, 'r') as f:
             photos_tmp = json.load(f)
@@ -59,29 +71,29 @@ def save_config_file(photos_config_path: Path, photos_config: dict):
         json.dump(photos_tmp, f)
 
 
-def sample_config_maintain_folder(config_dict: dict, new_folder: bool = False):
+def sample_config_maintain_folder(config_dict: dict, program_config: ProgramConfig, new_folder: bool = False):
     global CURRENT_FOLDER
     global SEEN_PICTURES
     if CURRENT_FOLDER is None or random.random() < 0.05 or new_folder:
-        CURRENT_FOLDER = choose_folder(config_dict)
+        CURRENT_FOLDER = choose_folder(config_dict, program_config['folder_sampling_level'])
         SEEN_PICTURES = []
 
     images_to_pick_from = {key: value for key, value in config_dict.items()
-                           if get_root_folder(key) == CURRENT_FOLDER and key not in SEEN_PICTURES}
+                           if get_root_folder(key, program_config['folder_sampling_level']) == CURRENT_FOLDER and key not in SEEN_PICTURES}
     if len(images_to_pick_from) == 0:
-        image = sample_config_maintain_folder(config_dict, True)
+        image = sample_config_maintain_folder(config_dict, program_config, True)
     else:
         image = sample_config_random(images_to_pick_from)
     SEEN_PICTURES.append(image)
     return image
 
 
-def get_root_folder(photo_path: Path):
-    return photo_path.parents[len(photo_path.parents) - 3]
+def get_root_folder(photo_path: Path, root_folder_level: int):
+    return photo_path.parents[len(photo_path.parents) - root_folder_level]
 
 
-def choose_folder(config_dict: dict):
-    folders = {get_root_folder(x) for x in config_dict}
+def choose_folder(config_dict: dict, root_folder_level: int):
+    folders = {get_root_folder(x, root_folder_level) for x in config_dict}
     folder = random.sample(list(folders), 1)[0]
     return folder
 

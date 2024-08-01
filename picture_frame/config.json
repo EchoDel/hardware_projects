@@ -2,6 +2,7 @@
   "photo_folder": "//rhino/photos/photos",
   "disallowed_folders": ["charly photos", "Parry_Photos"],
   "photos_config": "picture_frame/photos.json",
-  "second_to_show": 10,
-  "sampling_strategy": "folder"
+  "seconds_to_show": 10,
+  "sampling_strategy": "folder",
+  "folder_sampling_level": 3
 }
