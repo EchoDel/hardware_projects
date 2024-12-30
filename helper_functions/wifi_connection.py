@@ -13,7 +13,7 @@ def do_connect(attempts, ssid, password, hostname):
 
     if not sta_if.isconnected():
         sta_if.active(True)
-        sta_if.config(dhcp_hostname=hostname)
+        sta_if.config(hostname=hostname)
         print(ssid, password)
         sta_if.connect(ssid, password)
         while not sta_if.isconnected():
