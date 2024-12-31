@@ -1,1 +1,3 @@
-import PlantMonitor.main
+from ToddlerTimer.main import main
+
+main()
