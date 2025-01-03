@@ -57,7 +57,7 @@ def run_timer(oled, np, seconds_to_countdown, end_time):
         rotation += pi / 20
         plot_hour_glass(oled, (110, 16), rotation)
         seconds_left = end_time - time.time()
-        if seconds_left < 0:
+        if seconds_left <= 0:
             break
         elif seconds_left < 60:
             colour = low_time_led_colour
@@ -89,6 +89,7 @@ def run_timer(oled, np, seconds_to_countdown, end_time):
 def main():
     oled, rotary_encoder, rotary_encoder_sw, np = setup()
     while True:
+        clear_screen(oled)
         minutes_to_countdown, seconds_to_countdown, start_time, end_time = (
             pick_time(oled, rotary_encoder, rotary_encoder_sw))
         run_timer(oled, np, seconds_to_countdown, end_time)
